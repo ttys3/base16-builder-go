@@ -6,9 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	buildIgnoreErrors bool
-)
+var buildIgnoreErrors bool
 
 func init() {
 	RootCmd.AddCommand(buildCmd)

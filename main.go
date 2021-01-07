@@ -6,8 +6,11 @@ import (
 )
 
 var (
-	sourcesDir   string
-	schemesDir   string
+	// sourcesDir scheme and template index source repo
+	sourcesDir string
+	// color schemes dir
+	schemesDir string
+	// templates dir
 	templatesDir string
 
 	// Define the logger we'll be using
@@ -16,7 +19,7 @@ var (
 	log        = logrus.NewEntry(rawLog)
 )
 
-func init() {
+func initFlags() {
 	RootCmd.PersistentFlags().StringVar(&sourcesDir, "sources-dir", "./sources/", "Target directory for source repos")
 	RootCmd.PersistentFlags().StringVar(&schemesDir, "schemes-dir", "./schemes/", "Target directory for scheme data")
 	RootCmd.PersistentFlags().StringVar(&templatesDir, "templates-dir", "./templates/", "Target directory for template data")
@@ -27,6 +30,10 @@ func init() {
 }
 
 func initLogger() {
+	rawLog.Formatter = &logrus.TextFormatter{
+		ForceColors:  true,
+		PadLevelText: true,
+	}
 	rawLog.Level = logrus.InfoLevel
 	if logVerbose {
 		rawLog.Level = logrus.DebugLevel
@@ -40,6 +47,7 @@ var RootCmd = &cobra.Command{
 }
 
 func main() {
+	initFlags()
 	if err := RootCmd.Execute(); err != nil {
 		log.Fatal(err)
 	}
